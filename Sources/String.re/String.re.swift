@@ -62,9 +62,10 @@ struct Regex {
         let (ending, rope) = regex.matches(in: haystack, range: NSRange(location: 0, length: haystack.count)).enumerated().reduce((haystack.startIndex, "")) { acc, ele in
             let (beginning, rope) = acc
             let (idx, match) = ele
+            let starting = haystack.index(haystack.startIndex, offsetBy: match.range.location)
             let ending = haystack.index(haystack.startIndex, offsetBy: match.range.location + match.range.length)
             let result = MatchResult(within: haystack, from: match)
-            return (ending, rope + String(haystack[beginning..<ending]) + replacement(idx, result))
+            return (ending, rope + String(haystack[beginning..<starting]) + replacement(idx, result))
         }
         return rope + String(haystack[ending..<haystack.endIndex])
     }
